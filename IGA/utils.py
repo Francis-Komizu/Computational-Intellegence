@@ -58,6 +58,7 @@ def visualize_result(distances):
     plt.ylabel('distance')
     plt.show()
 
+
 def save_result(distances: list, save_path: str):
     result = np.array(distances)
     np.save(save_path, result)

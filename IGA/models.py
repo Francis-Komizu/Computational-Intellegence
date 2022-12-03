@@ -642,5 +642,7 @@ class Population:
         self.compute_density_probs()
         self.compute_density_probs()
 
+        self.chromosomes.sort(key=self.take_affinity, reverse=True)
+
         # 更新最好个体
         self.find_best()

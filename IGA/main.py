@@ -2,6 +2,8 @@ import numpy as np
 import utils
 import models
 import random
+import matplotlib.pyplot as plt
+import math
 
 seed = 4044
 random.seed(seed)
@@ -19,11 +21,11 @@ memory_size = 10
 radius = 1
 crossover_mode = 'MSCX'
 
-iterations = 6000
-exp_num = 2
+iterations = 100
+exp_num = 1
 
 data_path = 'data/att48.tsp'
-save_path = f'experiments/IGA-{exp_num}-{crossover_mode}-{population_size}-{iterations}.npy'
+# save_path = f'experiments/IGA-{exp_num}-{crossover_mode}-{population_size}-{iterations}.npy'
 
 # initialization
 cities, city_num = utils.get_cities(data_path)
@@ -44,8 +46,11 @@ Population = models.Population(chro_num=population_size,
 Population.init_population()
 distances = []  # 存储每代的最优结果，用于可视化
 
+result = []
+
 # 迭代
 for i in range(iterations):
+
     # 选择
     Population.selection()
 
@@ -66,7 +71,22 @@ for i in range(iterations):
     best_distance = utils.compute_distance(best_seq, city_num, distance_matrix)
     distances.append(best_distance)
 
+    length = len(Population.chromosomes)
+
+    affinities = []
+
+    for chromosome in Population.chromosomes:
+        affinities.append(chromosome.affinity)
+
+    affinities = np.array(affinities)
+    max, min = np.max(affinities), np.min(affinities)
+
+    affinities = (affinities - min) / (max - min)
+
+    result.append(affinities)
+
     print(Population.generation)
 
-utils.save_result(distances, save_path)
-utils.visualize_result(distances)
+save_path = 'experiments/distribution.npy'
+utils.save_result(result, save_path)
+# utils.visualize_result(distances)

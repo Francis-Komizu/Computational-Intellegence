@@ -1,0 +1,25 @@
+{
+  "train": {
+    "log_interval": 500,
+    "eval_interval": 100,
+    "seed": 1234,
+    "epochs": 100,
+    "betas": [0.8, 0.99],
+    "eps": 1e-9,
+    "learning_rate": 1e-3,
+    "lr_decay": 0.999875,
+    "weight_decay": 0.1,
+    "batch_size": 8,
+    "early_stop_count": 10,
+    "checkpoint_path": "models/checkpoint.pth",
+    "save_path": "models/checkpoint.pth"
+  },
+  "data": {
+    "train_path": "data/train_set.csv",
+    "dev_path": "data/dev_set.csv",
+    "test_path": "data/test_set.csv"
+  },
+  "model": {
+    "input_dim": 3
+  }
+}
