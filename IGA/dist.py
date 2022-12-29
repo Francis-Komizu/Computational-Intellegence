@@ -4,24 +4,23 @@ import numpy as np
 
 data = np.load('experiments/distribution.npy', allow_pickle=True)
 
-iter0 = data[0]
-iter19 = data[19]
-iter39 = data[39]
-iter59 = data[59]
-iter79 = data[79]
-iter99 = data[99]
 
-length = len(data[0])
+def plot_histogram(data, bins=50, log=False, normalize=''):
+    if log:
+        data = numpy.log(data)
 
-fig = plt.figure(figsize=(12, 6))
+    if normalize == 'zero':
+        mean, std = numpy.mean(data, axis=0), numpy.std(data, axis=0)
+        data = (data - mean) / std
+    elif normalize == 'linear':
+        max, min = numpy.max(data, axis=0), numpy.min(data, axis=0)
+        data = (data - min) / (max - min)
+    else:
+        pass
 
-x = range(length)
+    fig = plt.figure(figsize=(6, 4))
+    plt.hist(data, bins=bins)
+    plt.show()
 
-plt.plot(x, iter0, c='blue', label='iter0')
-plt.plot(x, iter19, c='red', label='iter19')
-plt.plot(x, iter39, c='yellow', label='iter39')
-plt.plot(x, iter59, c='green', label='iter59')
-plt.plot(x, iter79, c='cyan', label='iter79')
-plt.plot(x, iter99, c='pink', label='iter99')
 
-plt.show()
+plot_histogram(data[999], normalize='linear')

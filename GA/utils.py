@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import math
 
 
 def get_cities(file_path: str):
@@ -34,6 +35,22 @@ def get_distance_matrix(cities: dict, city_num: int):
     return distance_matrix
 
 
+def compute_optimal_distance(file_path: str, distance_matrix):
+    solution = []
+    with open(file_path, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+        for line in lines:
+            city = line.strip('\n')
+            solution.append(city)
+
+        length = len(solution)
+        solution = np.array(solution, dtype=np.int16)
+
+    optimal_distance = compute_distance(solution, length, distance_matrix)
+
+    return optimal_distance
+
+
 def compute_distance(solution, length, distance_matrix):
     total_distance = 0
     for i in range(length):
@@ -50,10 +67,10 @@ def compute_distance(solution, length, distance_matrix):
     return total_distance
 
 
-# 亲和度，即适应度
-def compute_affinity(solution, length, distance_matrix):
-    distance = compute_distance(solution, length, distance_matrix)
-    return 1.0 / distance
+def sigmoid(x):
+    y = 1 / (1 + math.e ** (-x))
+
+    return y
 
 
 def visualize_result(distances):
